@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">DataPersistence</string>
+    <string name="name_hint">Digite seu nome</string>
+
+    <string-array name="saudacoes">
+        <item>Sr</item>
+        <item>Sra</item>
+        <item>Dr</item>
+        <item>Dra</item>
+        <item>Sem tratamento</item>
+    </string-array>
 </resources>
