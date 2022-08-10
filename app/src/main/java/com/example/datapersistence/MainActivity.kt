@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.FileNotFoundException
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,13 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btnSalvar.setOnClickListener(View.OnClickListener {
-            val saudacaoPersistencia = this.getSharedPreferences("saudacao", Context.MODE_PRIVATE)
-            val editor = saudacaoPersistencia.edit()
-
-            editor.putString("nome", txtNome.text.toString())
-            editor.putString("tratamento", listTratamento.selectedItem.toString())
-            editor.apply()
-
+            val data = "${txtNome.text.toString()}:${listTratamento.selectedItem.toString()}"
+            gravacaoDadoArquivo("saudacao",  data)
             Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show()
         })
 
@@ -29,4 +27,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         })
     }
+
+    fun gravacaoDadoArquivo(filename: String, data: String) {
+        try {
+            val fs = openFileOutput(filename, Context.MODE_PRIVATE)
+            fs.write(data.toByteArray())
+            fs.close()
+        } catch (e: FileNotFoundException) {
+            Log.i("gravaDadoArquivo", "FileNotFoundException")
+        } catch (e: IOException) {
+            Log.i("gravaDadoArquivo", "IOException")
+        }
+
+    }
 }
+
+
