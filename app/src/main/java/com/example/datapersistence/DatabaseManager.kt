@@ -5,8 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.ContactsContract
-import java.net.ContentHandler
 
 class DatabaseManager(context: Context, name: String) : SQLiteOpenHelper(context, name, null, 1) {
     override fun onCreate(p0: SQLiteDatabase?) {

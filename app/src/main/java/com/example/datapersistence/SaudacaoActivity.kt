@@ -1,15 +1,9 @@
 package com.example.datapersistence
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_saudacao.*
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.nio.charset.Charset
-import java.util.*
-
 
 class SaudacaoActivity : AppCompatActivity() {
     @SuppressLint("Range")
