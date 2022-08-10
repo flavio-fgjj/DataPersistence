@@ -16,9 +16,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val db = DatabaseManager(this, "saudacoes")
+
         btnSalvar.setOnClickListener(View.OnClickListener {
-            val data = "${txtNome.text.toString()}:${listTratamento.selectedItem.toString()}"
-            gravacaoDadoArquivo("saudacao",  data)
+            db.removeSaudacao()
+            db.insereSaudacao(1, txtNome.text.toString().trim(), listTratamento.selectedItem.toString())
             Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show()
         })
 
@@ -26,19 +28,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SaudacaoActivity::class.java)
             startActivity(intent)
         })
-    }
-
-    fun gravacaoDadoArquivo(filename: String, data: String) {
-        try {
-            val fs = openFileOutput(filename, Context.MODE_PRIVATE)
-            fs.write(data.toByteArray())
-            fs.close()
-        } catch (e: FileNotFoundException) {
-            Log.i("gravaDadoArquivo", "FileNotFoundException")
-        } catch (e: IOException) {
-            Log.i("gravaDadoArquivo", "IOException")
-        }
-
     }
 }
 

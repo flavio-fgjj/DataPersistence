@@ -1,5 +1,6 @@
 package com.example.datapersistence
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,32 +12,23 @@ import java.util.*
 
 
 class SaudacaoActivity : AppCompatActivity() {
+    @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saudacao)
 
-        val data = recuperacaoDadoArquivo("saudacao")
-        val tokenizer = StringTokenizer(data, ":")
-        val nome = if (tokenizer.hasMoreTokens()) tokenizer.nextToken() else "Sem nome"
-        val tratamento = if (tokenizer.hasMoreTokens()) tokenizer.nextToken() else "Sem tratamento"
+        val db = DatabaseManager(this, "saudacoes")
+        val cursor = db.listaSaudacao()
+        var nome = ""
+        var tratamento = ""
 
-        lbSaudacao.text = if(tratamento.toString().lowercase() == "sem tratamento") nome else tratamento
-    }
-
-    fun recuperacaoDadoArquivo(filename: String): String {
-        try {
-            val fi = openFileInput(filename)
-            val data = fi.readBytes()
-
-            fi.close()
-
-            data.toString()
-            return data.toString(Charset.defaultCharset())
-        } catch (e: FileNotFoundException) {
-            return ""
-        } catch (e: IOException) {
-            return ""
+        if(cursor.count > 0) {
+            cursor.moveToFirst()
+            nome = cursor.getString(cursor.getColumnIndex("NOME"))
+            tratamento = cursor.getString(cursor.getColumnIndex("TRATAMENTO"))
         }
-    }
 
+        val aux = if (nome.isEmpty() && nome.toString() == "Sem nome") "Sem nome" else nome
+        lbSaudacao.text = if(tratamento.toString().lowercase() == "sem tratamento") nome else "$tratamento $aux"
+    }
 }
